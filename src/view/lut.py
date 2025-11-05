@@ -134,9 +134,9 @@ if navigation == "Spector":
                 try:
                     with st.spinner("Memproses gambar untuk prediksi..."):
                         if option == "VGG16":
-                            model_path = Path("model/vgg16.keras")
+                            model_path = Path("./model/vgg16.keras")
                         elif option == "MobileNetV2":
-                            model_path = Path("model/mnv2.keras")
+                            model_path = Path("./model/mnv2.keras")
                         else:
                             st.error("Model tidak valid!")
                             st.stop()
@@ -200,7 +200,7 @@ elif navigation == "Type":
     height = 200
 
     with col1:
-        img = resize_image("pict/telurayam.jpg", width, height)
+        img = resize_image("./pict/telurayam.jpg", width, height)
         st.image(img, caption="Telur Ayam")
         st.markdown(
             """
@@ -216,7 +216,7 @@ elif navigation == "Type":
         )
 
     with col2:
-        img = resize_image("pict/telurbebek.jpg", width, height)
+        img = resize_image("./pict/telurbebek.jpg", width, height)
         st.image(img, caption="Telur Bebek")
         st.markdown(
             """
