@@ -10,7 +10,6 @@ import os
 
 st.set_page_config(page_title="EggSpector", page_icon="🦖")
 st.title("EggSpector")
-
 BASE_DIR = Path(__file__).parent
 
 
