@@ -137,5 +137,3 @@ Hal ini mencerminkan efisiensi MobileNetV2 yang dirancang untuk kinerja optimal 
 
 ![predict](assets/rdm/prd.jpg)
 
-Febriansyah
-2021-511
