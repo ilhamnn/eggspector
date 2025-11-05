@@ -11,58 +11,64 @@ st.set_page_config(page_title="EggSpector", page_icon="🦖")
 st.title("EggSpector")
 
 
-# CSS
+# CSS dengan base64
 def set_background(image_file):
-    with open(image_file, "rb") as f:
-        img_data = f.read()
-    b64_encoded = base64.b64encode(img_data).decode()
-    style = f"""
-        <style>
-        .stApp {{
-            background-image: url(data:image/png;base64,{b64_encoded});
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-attachment: local;
-        }}
-        .overlay {{
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1;
-        }}
-        .content {{
-            position: relative;
-            z-index: 2;
-            padding: 0px;
-            margin: 0px;
-        }}
-        [data-testid="stVerticalBlockBorderWrapper"] {{
-            background-color: rgba(0, 0, 0, 0.5) !important;
-            border: none !important;
-            padding: 15px !important;
-            width: 100% !important;
-            border-radius: 10px !important;
-            margin-bottom: 5px !important;
-            backdrop-filter: blur(5px) !important;
-        }}
-        [class="st-emotion-cache-10trblm e1nzilvr1"] {{
-            justify-content: center !important;
-            text-align: center !important;
-            width: 100% !important;
-        }}
-        </style>
-    """
-    st.markdown(style, unsafe_allow_html=True)
+    try:
+        with open(image_file, "rb") as f:
+            img_data = f.read()
+        b64_encoded = base64.b64encode(img_data).decode()
+
+        style = f"""
+            <style>
+            .stApp {{
+                background-image: url(data:image/jpeg;base64,{b64_encoded});
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+            }}
+            .overlay {{
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 1;
+            }}
+            .content {{
+                position: relative;
+                z-index: 2;
+                padding: 0px;
+                margin: 0px;
+            }}
+            [data-testid="stVerticalBlockBorderWrapper"] {{
+                background-color: rgba(0, 0, 0, 0.5) !important;
+                border: none !important;
+                padding: 15px !important;
+                width: 100% !important;
+                border-radius: 10px !important;
+                margin-bottom: 5px !important;
+                backdrop-filter: blur(5px) !important;
+            }}
+            [class="st-emotion-cache-10trblm e1nzilvr1"] {{
+                justify-content: center !important;
+                text-align: center !important;
+                width: 100% !important;
+            }}
+            </style>
+        """
+        st.markdown(style, unsafe_allow_html=True)
+    except FileNotFoundError:
+        st.error(f"❌ File tidak ditemukan: {image_file}")
+        st.info("Pastikan path file sudah benar!")
+    except Exception as e:
+        st.error(f"❌ Error saat load background: {str(e)}")
 
 
-# Set background
-set_background("./assets/images/bg.jpg")
+set_background("pict/bg.jpg")
 
 
-# Fungsi untuk preprocessing gambar
 def preprocess_image(image_bytes):
     img = Image.open(io.BytesIO(image_bytes)).convert("RGB")
     img = img.resize((224, 224), Image.LANCZOS)
@@ -102,11 +108,10 @@ def resize_image(image_path, width, height):
 st.sidebar.title("Navigation")
 
 # Radio untuk navigasi
-navigation = st.sidebar.radio("", ["Spector", "About", "Type"])  # Menghapus teks label
+navigation = st.sidebar.radio("", ["Spector", "About", "Type"])
 
 
 if navigation == "Spector":
-    st.header("Hey, Ayo Cari Tahu Jenis Telurmu 🔎")
     option = st.selectbox(
         label="Pilih Model",
         options=("VGG16", "MobileNetV2"),
@@ -129,9 +134,9 @@ if navigation == "Spector":
                 try:
                     with st.spinner("Memproses gambar untuk prediksi..."):
                         if option == "VGG16":
-                            model_path = Path("./src/model/vgg16.keras")
+                            model_path = Path("model/vgg16.keras")
                         elif option == "MobileNetV2":
-                            model_path = Path("./src/model/mnv2.keras")
+                            model_path = Path("model/mnv2.keras")
                         else:
                             st.error("Model tidak valid!")
                             st.stop()
@@ -191,11 +196,11 @@ elif navigation == "About":
 elif navigation == "Type":
     col1, col2 = st.columns(2)
 
-    width = 300  # Lebar yang diinginkan
-    height = 200  # Tinggi yang diinginkan
+    width = 300
+    height = 200
 
     with col1:
-        img = resize_image("./assets/images/telurayam.jpg", width, height)
+        img = resize_image("pict/telurayam.jpg", width, height)
         st.image(img, caption="Telur Ayam")
         st.markdown(
             """
@@ -211,7 +216,7 @@ elif navigation == "Type":
         )
 
     with col2:
-        img = resize_image("./assets/images/telurbebek.jpg", width, height)
+        img = resize_image("pict/telurbebek.jpg", width, height)
         st.image(img, caption="Telur Bebek")
         st.markdown(
             """
