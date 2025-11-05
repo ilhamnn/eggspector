@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> f9730a1 (requirenments)
 # 🦖 EggSpector: Klasifikasi Citra Jenis Telur Ayam & Bebek Dengan Mengimplementasikan VGG-16 & MobileNetV2
 
 
