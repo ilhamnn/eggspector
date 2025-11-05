@@ -6,15 +6,20 @@ import numpy as np
 from PIL import Image
 import io
 import base64
+import os
 
 st.set_page_config(page_title="EggSpector", page_icon="🦖")
 st.title("EggSpector")
 
+BASE_DIR = Path(__file__).parent
 
-# CSS dengan base64
+
 def set_background(image_file):
     try:
-        with open(image_file, "rb") as f:
+        # Path relatif dari BASE_DIR (src/view/)
+        image_path = BASE_DIR / image_file
+
+        with open(image_path, "rb") as f:
             img_data = f.read()
         b64_encoded = base64.b64encode(img_data).decode()
 
@@ -61,9 +66,9 @@ def set_background(image_file):
         st.markdown(style, unsafe_allow_html=True)
     except FileNotFoundError:
         st.error(f"❌ File tidak ditemukan: {image_file}")
-        st.info("Pastikan path file sudah benar!")
+        st.info(f"Looking at: {BASE_DIR / image_file}")
     except Exception as e:
-        st.error(f"❌ Error saat load background: {str(e)}")
+        st.error(f"❌ Error: {str(e)}")
 
 
 set_background("pict/bg.jpg")
@@ -78,11 +83,14 @@ def preprocess_image(image_bytes):
     return img_array
 
 
-# Fungsi untuk prediksi gambar
 def predict_image(img_array, model_path):
     class_names = ["Telur Ayam", "Telur Bebek"]
 
     try:
+        # Path relatif dari BASE_DIR
+        if not os.path.isabs(model_path):
+            model_path = BASE_DIR / model_path
+
         model = tf.keras.models.load_model(model_path)
         output = model.predict(img_array)
         score = tf.nn.softmax(output[0])
@@ -99,6 +107,9 @@ def predict_image(img_array, model_path):
 
 
 def resize_image(image_path, width, height):
+    # Path relatif dari BASE_DIR
+    if not os.path.isabs(image_path):
+        image_path = BASE_DIR / image_path
     img = Image.open(image_path)
     img = img.resize((width, height))
     return img
@@ -106,8 +117,6 @@ def resize_image(image_path, width, height):
 
 # NAVIGATION in Sidebar
 st.sidebar.title("Navigation")
-
-# Radio untuk navigasi
 navigation = st.sidebar.radio("", ["Spector", "About", "Type"])
 
 
@@ -134,9 +143,9 @@ if navigation == "Spector":
                 try:
                     with st.spinner("Memproses gambar untuk prediksi..."):
                         if option == "VGG16":
-                            model_path = Path("./model/vgg16.keras")
+                            model_path = "model/vgg16.keras"
                         elif option == "MobileNetV2":
-                            model_path = Path("./model/mnv2.keras")
+                            model_path = "model/mnv2.keras"
                         else:
                             st.error("Model tidak valid!")
                             st.stop()
@@ -200,7 +209,7 @@ elif navigation == "Type":
     height = 200
 
     with col1:
-        img = resize_image("./pict/telurayam.jpg", width, height)
+        img = resize_image("pict/telurayam.jpg", width, height)
         st.image(img, caption="Telur Ayam")
         st.markdown(
             """
@@ -216,7 +225,7 @@ elif navigation == "Type":
         )
 
     with col2:
-        img = resize_image("./pict/telurbebek.jpg", width, height)
+        img = resize_image("pict/telurbebek.jpg", width, height)
         st.image(img, caption="Telur Bebek")
         st.markdown(
             """
