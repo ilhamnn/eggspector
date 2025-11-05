@@ -1,6 +1,4 @@
-
-# Submission UAP ML VIIB
-## 🦖 EggSpector: Klasifikasi Citra Jenis Telur Ayam & Bebek Dengan Mengimplementasikan VGG-16 & MobileNetV2
+# 🦖 EggSpector: Klasifikasi Citra Jenis Telur Ayam & Bebek Dengan Mengimplementasikan VGG-16 & MobileNetV2
 
 
 
