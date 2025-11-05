@@ -1,5 +1,5 @@
 
-# 🦖 EggSpector: Klasifikasi Citra Jenis Telur Ayam & Bebek Dengan Mengimplementasikan VGG-16 & MobileNetV2s
+# 🦖 EggSpector: Klasifikasi Citra Jenis Telur Ayam & Bebek Dengan Mengimplementasikan VGG-16 & MobileNetV2
 
 
 
